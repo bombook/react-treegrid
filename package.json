@@ -1,48 +1,24 @@
 {
-  "name": "react-gridtree",
-  "version": "1.1.2",
-  "description": "React TreeGrid Component",
-  "main": "lib/index.js",
+  "name": "react-treegrid-next",
+  "version": "2.0.0",
+  "private": true,
+  "description": "React TreeGrid example migrated to Next.js App Router",
   "scripts": {
-    "test": "react-scripts test --env=jsdom",
-    "build": "babel src/ -d lib"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/PhillBeck/react-treegrid.git"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "deep-equal": "^1.0.1",
-    "react": "^15.6.1",
-    "uuid": "^3.1.0"
+    "next": "14.2.32",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-add-module-exports": "^0.1.2",
-    "babel-plugin-react-html-attrs": "^2.0.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-plugin-transform-runtime": "^6.22.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "react-dom": "^15.6.1",
-    "react-scripts": "1.0.13"
-  },
-  "keywords": [
-    "react",
-    "gridtree",
-    "treegrid",
-    "grid"
-  ],
-  "author": {
-    "name": "Phillip Beck",
-    "email": "phillipcbeck@gmail.com"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/PhillBeck/react-treegrid/issues"
-  },
-  "homepage": "https://github.com/PhillBeck/react-treegrid#readme"
+    "@types/node": "^20.14.8",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.5.2"
+  }
 }
