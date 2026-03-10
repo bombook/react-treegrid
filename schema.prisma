@@ -7,20 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum bpmn_definition_status {
+enum workflow_definition_status {
   DRAFT
   DEPLOYED
   ARCHIVED
 }
 
-enum bpmn_instance_status {
+enum workflow_instance_status {
   RUNNING
   COMPLETED
   FAILED
   CANCELED
 }
 
-enum bpmn_activity_status {
+enum workflow_activity_status {
   READY
   ACTIVE
   COMPLETED
@@ -43,8 +43,8 @@ model project_task {
   created_at                  DateTime @default(now())
   updated_at                  DateTime @updatedAt
 
-  workflow_definition         bpmn_workflow_definition? @relation("task_workflow_definition", fields: [workflow_definition_id], references: [id])
-  workflow_instances          bpmn_workflow_instance[]  @relation("task_workflow_instances")
+  workflow_definition         workflow_definition? @relation("task_workflow_definition", fields: [workflow_definition_id], references: [id])
+  workflow_instances          workflow_instance[]  @relation("task_workflow_instances")
 
   @@index([project_id])
   @@index([parent_id])
@@ -52,39 +52,39 @@ model project_task {
   @@index([current_workflow_instance_id])
 }
 
-model bpmn_workflow_definition {
+model workflow_definition {
   id            String                 @id @default(uuid())
   workspace_id  String
   workflow_key   String
   name          String
   version       Int
-  status        bpmn_definition_status @default(DRAFT)
-  bpmn_xml      String
+  status        workflow_definition_status @default(DRAFT)
+  workflow_xml      String
   created_by    String?
   created_at    DateTime               @default(now())
   updated_at    DateTime               @updatedAt
 
-  workflow_instances bpmn_workflow_instance[]
+  workflow_instances workflow_instance[]
   project_tasks     project_task[]          @relation("task_workflow_definition")
 
   @@unique([workspace_id, workflow_key, version])
   @@index([workspace_id, workflow_key, status])
 }
 
-model bpmn_workflow_instance {
+model workflow_instance {
   id               String               @id @default(uuid())
   workspace_id     String
   definition_id    String
   project_task_id  String?
   business_key     String?
-  status           bpmn_instance_status @default(RUNNING)
+  status           workflow_instance_status @default(RUNNING)
   started_at       DateTime             @default(now())
   ended_at         DateTime?
   variables_json   Json?
 
-  definition       bpmn_workflow_definition @relation(fields: [definition_id], references: [id])
+  definition       workflow_definition @relation(fields: [definition_id], references: [id])
   project_task     project_task?           @relation("task_workflow_instances", fields: [project_task_id], references: [id])
-  activities       bpmn_activity_instance[]
+  activities       workflow_activity_instance[]
 
   @@index([workspace_id, status, started_at])
   @@index([definition_id])
@@ -92,19 +92,19 @@ model bpmn_workflow_instance {
   @@unique([workspace_id, business_key])
 }
 
-model bpmn_activity_instance {
+model workflow_activity_instance {
   id                  String               @id @default(uuid())
   workflow_instance_id String
   element_id          String
   element_type        String
   name                String?
   assignee            String?
-  status              bpmn_activity_status
+  status              workflow_activity_status
   started_at          DateTime?
   ended_at            DateTime?
   error_message       String?
 
-  workflow_instance    bpmn_workflow_instance @relation(fields: [workflow_instance_id], references: [id])
+  workflow_instance    workflow_instance @relation(fields: [workflow_instance_id], references: [id])
 
   @@index([workflow_instance_id, element_id])
   @@index([status, assignee])
